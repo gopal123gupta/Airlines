@@ -1,0 +1,60 @@
+pragma solidity ^ 0.8.0;
+
+contract airlinep{
+    address payable pasenger;
+    address airline = 0xCA35b7d915458EF540aDe6068dFe2F44E8fa733c;
+    address atc;
+    address[] passengers;
+    
+    
+    
+    
+    mapping(address => uint256) ticatprize;
+    
+    
+    modifier onlyATC() {
+     require(msg.sender == atc,"only admin run this function");
+     _;
+    }
+    
+    constructor() {
+        atc =( msg.sender);
+    }
+    
+//if plan late then return all money      
+    function set(address _passenger , uint256 _ticatprize) public{
+       ticatprize[_passenger] = _ticatprize;
+       passengers.push(_passenger); 
+    }
+    
+    function viewplan() public view returns(address[] memory){
+        return passengers;
+    }
+    
+    
+    
+    
+// this function is use to chek how much late plan
+// if plan more then > 2 minat late then 10% miney back
+
+
+
+   
+  uint256 latetimes;
+  function latetime(uint8 _latetime) public onlyATC returns(uint256){
+      latetimes= _latetime;
+      return latetimes;
+}
+
+
+ uint256 refandamt;
+  function refund() public returns(uint256){
+      if(latetimes >30){
+         refandamt = ticatprize[msg.sender]*10/100;  
+          
+      }
+      {
+         return refandamt;
+      }
+  }
+}
